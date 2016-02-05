@@ -152,6 +152,7 @@ class CompositeTask
   ANSI_FG_RED      = "\e[31m"
 
   def colorize attribute, message
+    return unless io
     if io.tty?
       io.write "#{ANSI_RESET}#{Object.const_get("#{self.class}::ANSI_#{attribute.to_s.upcase}")}#{message}#{ANSI_RESET}"
     else
