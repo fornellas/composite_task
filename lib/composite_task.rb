@@ -108,15 +108,20 @@ class CompositeTask
     !!action
   end
 
-  # All tasks that self is composed (including self), only includen the ones where #has_action? is true.
+  # All tasks that self is composed  of(including self), but excluding the ones what #has_action? is false.
   # :call-seq:
-  # tasks -> Enumerator
-  # tasks {|task| ... }
+  # tasks_with_action -> Enumerator
+  # tasks_with_action {|task| ... }
   def tasks_with_action
     return to_enum(__method__) unless block_given?
     tasks.each do |task|
       yield task if task.has_action?
     end
+  end
+
+  # Returns true only if self has no actions define in itself, or in any of its sub tasks.
+  def empty?
+    tasks_with_action.count == 0
   end
 
   # Returns the first task with action with given name.
