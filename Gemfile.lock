@@ -1,0 +1,25 @@
+PATH
+  remote: .
+  specs:
+    composite_task (0.0.0)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    agita (0.4.0)
+    gem_polisher (0.4.9)
+      agita (~> 0.1)
+      semantic (~> 1.4, >= 1.4.1)
+    rake (10.5.0)
+    semantic (1.4.1)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  composite_task!
+  gem_polisher (~> 0.4)
+  rake (~> 10.4)
+
+BUNDLED WITH
+   1.11.2
