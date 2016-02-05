@@ -7,7 +7,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     agita (0.4.0)
-    gem_polisher (0.4.9)
+    gem_polisher (0.4.10)
       agita (~> 0.1)
       semantic (~> 1.4, >= 1.4.1)
     rake (10.5.0)
