@@ -119,7 +119,7 @@ class CompositeTask
     end
   end
 
-  # Returns true only if self has no actions define in itself, or in any of its sub tasks.
+  # Returns true only if self has no actions defined in itself, or in any of its sub tasks.
   def empty?
     tasks_with_action.count == 0
   end
