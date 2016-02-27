@@ -13,4 +13,6 @@ Gem::Specification.new do |s|
   s.rdoc_options     = %w{--main README.md lib/ README.md}
   s.add_development_dependency 'rake', '~>10.4'
   s.add_development_dependency 'gem_polisher', '~>0.4'
+  s.add_development_dependency 'rspec', '~>3.4'
+  s.add_development_dependency 'simplecov', '~>0.11', '>=0.11.2'
 end
