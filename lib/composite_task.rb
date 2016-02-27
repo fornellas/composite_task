@@ -15,11 +15,11 @@ class CompositeTask
 
   # Creates a new CompositeTask, and can be used in several fashions.
   #
-  # For an ananymous top level class:
+  # For an anonymous top level task:
   #   task = CompositeTask.new()
-  # For a named task:
+  # For a named top level task:
   #   task = CompositeTask.new("Task witohut action")
-  # For a named task, with an action block:
+  # For a named top level task, with an action block:
   #   task = CompositeTask.new("Task with action") do |task|
   #     puts "Executing action for #{task.name}"
   #   end
