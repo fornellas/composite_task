@@ -70,4 +70,25 @@ RSpec.describe CompositeTask do
       end
     end
   end
+  context '#add_group' do
+    let(:group_name) { 'group_name' }
+    def added_group ; subject.sub_tasks.first ; end
+    it 'adds empty sub task' do
+      expect do
+        subject.add_group(group_name) { }
+      end.to change{ subject.sub_tasks.length }
+        .from(0)
+        .to(1)
+      expect(added_group.name).to eq(group_name)
+      expect(added_group.action).to be_nil
+    end
+    it 'yields created task' do
+      yielded_group = nil
+      subject.add_group(group_name) { |group| yielded_group = group }
+      expect(yielded_group).to eq(added_group)
+      expect(yielded_group.name).to eq(group_name)
+      expect(yielded_group.action).to be_nil
+      expect(yielded_group).to be_a(described_class)
+    end
+  end
 end
