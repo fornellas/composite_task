@@ -4,8 +4,7 @@ RSpec.describe CompositeTask do
   context '#initialize' do
     let(:block_action) { proc { true } }
     shared_examples :common_initialize do
-      it { is_expected.to have_attributes(io: STDOUT) }
-      it 'has empty sub tasks' do
+      it 'has no sub tasks' do
         expect(subject.sub_tasks).to be_empty
       end
     end
@@ -42,6 +41,32 @@ RSpec.describe CompositeTask do
         include_examples :common_initialize
         include_examples :block_action
         include_examples :task_name
+      end
+    end
+  end
+  context '#add_sub_task' do
+    context 'add task directly' do
+      let(:sub_task) { described_class.new }
+      it 'adds task' do
+        expect do
+          subject.add_sub_task(sub_task)
+        end.to change{ subject.sub_tasks.include?(sub_task) }
+          .from(be_falsey)
+          .to(be_truthy)
+      end
+    end
+    context 'add task by attributes' do
+      let(:sub_task_name) { 'sub_task_name' }
+      let(:sub_task_block) { proc {} }
+      def added_sub_task ; subject.sub_tasks.first ; end
+      it 'creates and adds task' do
+        expect do
+          subject.add_sub_task(sub_task_name, &sub_task_block)
+        end.to change{ subject.sub_tasks.length }
+          .from(0)
+          .to(1)
+        expect(added_sub_task.name).to eq(sub_task_name)
+        expect(added_sub_task.action).to eq(sub_task_block)
       end
     end
   end
