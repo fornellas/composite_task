@@ -10,9 +10,6 @@ class CompositeTask
   # Task action (ie: given block). Can be nil for grouping only tasks.
   attr_reader :action
 
-  # IO like object where to write progress to.
-  attr_reader :io
-
   # Creates a new CompositeTask, and can be used in several fashions.
   #
   # For an anonymous top level task:
@@ -28,12 +25,11 @@ class CompositeTask
   # Progress reporting is done to given io. can be set to nil to disable reporting.
   # :call-seq:
   # initialize()
-  # initialize(nil, io=STDOUT)
-  # initialize(name, io=STDOUT)
-  # initialize(name, io=STDOUT) {|task| ... }
-  def initialize(name=nil, io=STDOUT, &action)
+  # initialize(nil)
+  # initialize(name)
+  # initialize(name) {|task| ... }
+  def initialize(name=nil, &action)
     @name = name
-    @io = io
     @action = action
     if action && !name
       raise ArgumentError.new('Anonymous tasks are only allowed without a block.')
@@ -67,16 +63,16 @@ class CompositeTask
   # Execute all added sub tasks (#sub_tasks) in order, then execute itself (#call_action).
   # :call-seq:
   # execute()
-  def execute(indent = 0)
+  def execute(indent = 0, io=STDOUT)
     if leaf?
       call_action(indent)
     else
       write_bright("#{'  ' * indent}#{name}\n") if name
       increment = name ? 1 : 0
       sub_tasks.each do |task|
-        task.execute(indent + increment)
+        task.execute(indent + increment, io)
       end
-      call_action(indent + increment)
+      call_action(indent + increment, io)
     end
   end
 
@@ -131,16 +127,16 @@ class CompositeTask
 
   # Execute self action only, without executing any of its sub tasks.
   # :call-seq: call_action
-  def call_action indent = 0
+  def call_action indent = 0, io
     if action
-      write_bright "#{'  ' * indent}#{name}... "
+      write_bright(io, "#{'  ' * indent}#{name}... ")
       begin
         @action.call(self)
       rescue
-        write_red "[FAIL]\n"
+        write_red(io, "[FAIL]\n")
         raise $!
       else
-        write_green "[OK]\n"
+        write_green(io, "[OK]\n")
       end
     else
       if leaf?
@@ -156,7 +152,7 @@ class CompositeTask
   ANSI_FG_GREEN    = "\e[32m"
   ANSI_FG_RED      = "\e[31m"
 
-  def colorize attribute, message
+  def colorize attribute, io, message
     return unless io
     if io.tty?
       io.write "#{ANSI_RESET}#{Object.const_get("#{self.class}::ANSI_#{attribute.to_s.upcase}")}#{message}#{ANSI_RESET}"
@@ -166,15 +162,15 @@ class CompositeTask
   end
 
   def write_bright message
-    colorize(:attr_bright, message)
+    colorize(:attr_bright, io, message)
   end
 
   def write_green message
-    colorize(:fg_green, message)
+    colorize(:fg_green, io, message)
   end
 
   def write_red message
-    colorize(:fg_red, message)
+    colorize(:fg_red, io, message)
   end
 
 end
