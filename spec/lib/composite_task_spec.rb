@@ -91,4 +91,25 @@ RSpec.describe CompositeTask do
       expect(yielded_group).to be_a(described_class)
     end
   end
+  context '#execute' do
+    # TODO
+  end
+  context '#leaf?' do
+    context 'no sub tasks' do
+      subject { described_class.new.leaf? }
+      it 'returns true' do
+        expect(subject).to be_truthy
+      end
+    end
+    context 'with sub tasks' do
+      subject do
+        composite_task = described_class.new
+        composite_task.add_sub_task('sub-task'){}
+        composite_task.leaf?
+      end
+      it 'returns false' do
+        expect(subject).to be_falsey
+      end
+    end
+  end
 end
