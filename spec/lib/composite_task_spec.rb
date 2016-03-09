@@ -112,4 +112,36 @@ RSpec.describe CompositeTask do
       end
     end
   end
+  context '#length' do
+    # TODO
+  end
+  context '#tasks' do
+    # TODO
+  end
+  context '#has_action?' do
+    context 'has action' do
+      subject { described_class.new('test'){}.has_action? }
+      it 'returns true' do
+        expect(subject).to be_truthy
+      end
+    end
+    context 'has no action' do
+      subject { described_class.new('test').has_action? }
+      it 'returns true' do
+        expect(subject).to be_falsey
+      end
+    end
+  end
+  context '#tasks_with_action' do
+    # TODO
+  end
+  context '#empty?' do
+    # TODO
+  end
+  context '#[]' do
+    # TODO
+  end
+  context '#call_action' do
+    # TODO
+  end
 end
