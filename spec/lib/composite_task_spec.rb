@@ -143,7 +143,18 @@ RSpec.describe CompositeTask do
     end
   end
   context '#tasks_with_action' do
-    # TODO
+    subject do
+      ct = described_class.new('first task with action'){}
+      ct.add_group('group') do |g|
+        g.add_sub_task('second task with action'){}
+      end
+      ct
+    end
+    it 'generates list of all actions' do
+      task_list = subject.tasks_with_action.to_a
+      expect(task_list[0].name).to eq('first task with action')
+      expect(task_list[1].name).to eq('second task with action')
+    end
   end
   context '#empty?' do
     # TODO
