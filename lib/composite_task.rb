@@ -24,10 +24,10 @@ class CompositeTask
   #
   # Progress reporting is done to given io. can be set to nil to disable reporting.
   # :call-seq:
-  # initialize()
-  # initialize(nil)
-  # initialize(name)
-  # initialize(name) {|task| ... }
+  # new()
+  # new(nil)
+  # new(name)
+  # new(name) {|task| ... }
   def initialize(name=nil, &action)
     @name = name
     @action = action
@@ -62,17 +62,17 @@ class CompositeTask
 
   # Execute all added sub tasks (#sub_tasks) in order, then execute itself (#call_action).
   # :call-seq:
-  # execute()
-  def execute(indent = 0, io=STDOUT)
+  # execute(io=STDOUT)
+  def execute(io=STDOUT, indent = 0)
     if leaf?
       call_action(indent)
     else
       write_bright("#{'  ' * indent}#{name}\n") if name
       increment = name ? 1 : 0
       sub_tasks.each do |task|
-        task.execute(indent + increment, io)
+        task.execute(io, indent + increment)
       end
-      call_action(indent + increment, io)
+      call_action(io, indent + increment)
     end
   end
 
@@ -126,8 +126,8 @@ class CompositeTask
   end
 
   # Execute self action only, without executing any of its sub tasks.
-  # :call-seq: call_action
-  def call_action indent = 0, io
+  # :call-seq: call_action(io=STDOUT)
+  def call_action io=STDOUT, indent = 0
     if action
       write_bright(io, "#{'  ' * indent}#{name}... ")
       begin
