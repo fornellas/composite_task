@@ -113,7 +113,17 @@ RSpec.describe CompositeTask do
     end
   end
   context '#length' do
-    # TODO
+    subject do
+      ct = described_class.new('top level'){}
+      ct.add_group('group') do |g|
+        g.add_sub_task('task inside group'){}
+      end
+      ct
+    end
+    let(:tasks_with_action) { 2 }
+    it 'returns number of tasks with action' do
+      expect(subject.length).to eq(tasks_with_action)
+    end
   end
   context '#tasks' do
     # TODO
