@@ -51,8 +51,8 @@ class CompositeTask
 
   # Adds a sub task without an action defined. Yields newly created task, so it can be used to compose the task:
   #   task.add_group("Group of tasks") do |g|
-  #      g.add_task('task1') { puts 'from task1 inside group' }
-  #      g.add_task('task2') { puts 'from task2 inside group' }
+  #      g.add_sub_task('task1') { puts 'from task1 inside group' }
+  #      g.add_sub_task('task2') { puts 'from task2 inside group' }
   #   end
   def add_group name # :yields: sub_task
     sub_tasks << ( sub_task = self.class.new(name) )
