@@ -157,7 +157,30 @@ RSpec.describe CompositeTask do
     end
   end
   context '#empty?' do
-    # TODO
+    context 'has no tasks with action' do
+      subject do
+        ct = described_class.new('top level')
+        ct.add_group('group') do |g|
+          g.add_sub_task('task inside group')
+        end
+        ct
+      end
+      it 'returns true' do
+        expect(subject.empty?).to be_truthy
+      end
+    end
+    context 'has tasks with action' do
+      subject do
+        ct = described_class.new('top level')
+        ct.add_group('group') do |g|
+          g.add_sub_task('task inside group'){}
+        end
+        ct
+      end
+      it 'returns false' do
+        expect(subject.empty?).to be_falsey
+      end
+    end
   end
   context '#[]' do
     # TODO
